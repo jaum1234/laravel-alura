@@ -15,5 +15,6 @@
 
         @yield('conteudo')
     </div>
+    <script src="https://kit.fontawesome.com/b763dd609a.js" crossorigin="anonymous"></script>
 </body>
 </html>
