@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Serie;
 use Illuminate\Http\Request;
+use App\Service\CriadorDeSerie;
+use App\Http\Requests\SeriesFormRequest;
+use App\Models\Episodio;
+use App\Models\Temporada;
 
 class SeriesController extends Controller
 {
@@ -25,19 +29,26 @@ class SeriesController extends Controller
         return view('series.create');
     }
 
-    public function store(Request $request)
+    public function store(SeriesFormRequest $request, CriadorDeSerie $criadorDeSerie)
     {
-        $nome = $request->get('nome');
-
+        //$nome = $request->get('nome');
+        //$serie = Serie::create($request->all());
+        
+        $serie = $criadorDeSerie->criarSerie(
+            $request->nome,
+            $request->qtd_temporadas,
+            $request->ep_por_temporada
+        );
+        /*
         $serie = Serie::create([
             'nome' => $nome
         ]);
+        */
 
         $request->session()->flash('mensagem',
-                                 "Serie {$serie->id} criada com sucesso: {$serie->nome}"
+                                 "Serie {$serie->id}, suas temporadas e episodios criada com sucesso: {$serie->nome}"
                                 );
 
-        //$serie = Serie::create($request->all());
         //adiciona todos os dados do formulario
 
         return redirect()->route('listar_series');    
@@ -51,9 +62,16 @@ class SeriesController extends Controller
 
     public function destroy(Request $request)
     {
+        $serie = Serie::find($request->id);
+        $serie->temporadas->each(function (Temporada $temporada) {
+            $temporada->episodios->each(function (Episodio $episodio) {
+                $episodio->delete();
+            });
+            $temporada->delete();
+        });
         Serie::destroy($request->id);
         $request->session()->flash('mensagem',
-                                 "Serie removida com sucesso"
+                                    "Serie '$serie->nome' removida com sucesso"
                                 );
         return redirect()->route('listar_series');
     }

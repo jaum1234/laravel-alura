@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\TemporadasController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,6 @@ Route::get('/series/criar', [SeriesController::class, 'create'])
     
 Route::post('/series/criar', [SeriesController::class, 'store']);
 Route::post('/series/remover/{id}', [SeriesController::class, 'destroy']);
+
+Route::get('/series/{serieId}/temporadas', [TemporadasController::class, 'index']);
 
