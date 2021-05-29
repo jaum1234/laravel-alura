@@ -8,6 +8,7 @@ use App\Service\CriadorDeSerie;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\Episodio;
 use App\Models\Temporada;
+use App\Service\RemovedorDeSerie;
 
 class SeriesController extends Controller
 {
@@ -60,8 +61,10 @@ class SeriesController extends Controller
         */
     }
 
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request, RemovedorDeSerie $removedorDeSerie)
+    {   
+        $nomeSerie = $removedorDeSerie->removerSerie($request->id);
+        /*
         $serie = Serie::find($request->id);
         $serie->temporadas->each(function (Temporada $temporada) {
             $temporada->episodios->each(function (Episodio $episodio) {
@@ -70,8 +73,11 @@ class SeriesController extends Controller
             $temporada->delete();
         });
         Serie::destroy($request->id);
+        */
+        //$serie->delete(); 
+        //ambos os modos funcionam para remover um item do banco de dados...
         $request->session()->flash('mensagem',
-                                    "Serie '$serie->nome' removida com sucesso"
+                                    "Serie '$nomeSerie' removida com sucesso"
                                 );
         return redirect()->route('listar_series');
     }

@@ -14,8 +14,23 @@ Séries
         <a href="{{ route('form_criar_serie') }}" class="btn btn-dark mb-2">Adicionar</a>
         <ul class="list-group ">
             @foreach ($series as $serie) 
-            <li class="list-group-item d-flex align-items-center justify-content-between">{{ $serie->nome }}
+            <li class="list-group-item d-flex align-items-center justify-content-between">
+                <span id="nome-serie-{{ $serie->id }}" data-nome-serie="">{{ $serie->nome }}</span>
+
+                <div class="input-group w-50" hidden id="input-nome-serie-{{ $serie->id }}" data-input-nome-serie->
+                    <input type="text" class="form-control" value="{{ $serie->nome }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" onclick="editarSerie({{ $serie->id }})">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        @csrf
+                    </div>
+                </div>
+
                 <span class="d-flex">
+                    <button class="btn btn-info btn-sm me-2" onclick="toggleInput({{ $serie->id }})">
+                        <i class="fas fa-edit"></i>
+                    </button>
                     <a href="/series/{{ $serie->id }}/temporadas" class="btn btn-info btn-sm ">
                         <i class="fas fa-external-link-alt"></i>
                     </a>
@@ -30,4 +45,12 @@ Séries
             @endforeach                 <!--Substitui a necessidade de utilizar a sintaxe PHP-->
             
         </ul>
+
+        <script>
+            function toggleInput(serieId) {
+                document.querySelector("[data-input-nome-serie-" + serieId + "]")
+                .removeAttribute('hidden');
+                document.querySelector("[data-nome-serie-" + serieId + "]").hidden = true;
+            }
+        </script>
 @endsection('conteudo')
