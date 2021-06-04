@@ -48,9 +48,34 @@ Séries
 
         <script>
             function toggleInput(serieId) {
-                document.querySelector("[data-input-nome-serie-" + serieId + "]")
-                .removeAttribute('hidden');
-                document.querySelector("[data-nome-serie-" + serieId + "]").hidden = true;
+                const nomeSerieEl = document.getElementById(`nome-serie-${serieId}`);
+                const inputSerieEl = document.getElementById(`input-nome-serie-${serieId}`);
+                if (nomeSerieEl.hasAttribute('hidden')) {
+                    nomeSerieEl.removeAttribute('hidden');
+                    inputSerieEl.hidden = true;
+                    return;
+                }
+                inputSerieEl.removeAttribute('hidden');
+                nomeSerieEl.hidden = true;
+            }
+
+            function editarSerie(serieId) {
+                let formData = new FormData();
+                const nome = document.querySelector(`#input-nome-serie-${serieId} > input`).value;
+                const token = document.querySelector('input[name="_token"]').value;
+                
+                formData.append('nome', nome);
+                formData.append('_token', token)
+                
+                const url = `/series/${serieId}/editaNome`;
+                fetch(url, {
+                    body: formData,
+                    method: 'POST'
+                }).then(() => {
+                    toggleInput(serieId);
+                    document.getElementById(`nome-serie-${serieId}`).textContent = nome;
+                });
+                
             }
         </script>
 @endsection('conteudo')
