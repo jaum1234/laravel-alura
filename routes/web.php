@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\SeriesController;
-use App\Http\Controllers\TemporadasController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\EpisodiosController;
+use App\Http\Controllers\TemporadasController;
+use App\Models\Episodio;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +32,8 @@ Route::post('/series/remover/{id}', [SeriesController::class, 'destroy']);
 Route::get('/series/{serieId}/temporadas', [TemporadasController::class, 'index']);
 
 Route::post('/series/{id}/editaNome', [SeriesController::class, 'editaNome']);
+
+Route::get('/temporadas/{temporada}/episodios', [EpisodiosController::class, 'index']);
+
+Route::post('/temporadas/{temporada}/episodios/assitir', [EpisodiosController::class, 'assistir']);
 
