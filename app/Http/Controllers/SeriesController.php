@@ -12,6 +12,11 @@ use App\Service\RemovedorDeSerie;
 
 class SeriesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Request $request) 
     {
         //var_dump($request->query('nome2'));
