@@ -1,11 +1,13 @@
 <?php
 
 use Faker\Guesser\Name;
+use App\Models\Episodio;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\EpisodiosController;
 use App\Http\Controllers\TemporadasController;
-use App\Models\Episodio;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,8 @@ use App\Models\Episodio;
 
 
 Route::get('/series', [SeriesController::class, 'index'])
-    ->name('listar_series');
+    ->name('listar_series')
+    ->middleware('auth');
 
 Route::get('/series/criar', [SeriesController::class, 'create'])
     ->name('form_criar_serie');
@@ -36,4 +39,10 @@ Route::post('/series/{id}/editaNome', [SeriesController::class, 'editaNome']);
 Route::get('/temporadas/{temporada}/episodios', [EpisodiosController::class, 'index']);
 
 Route::post('/temporadas/{temporada}/episodios/assitir', [EpisodiosController::class, 'assistir']);
+
+Route::get('/login', [LoginController::class, 'index']);
+Route::post('/login/do', [LoginController::class, 'login']);
+
+Route::get('/registro', [RegistroController::class, 'create']);
+Route::post('/registro/do', [RegistroController::class, 'store']);
 

@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('cabecalho')
-Séries
+    Séries
 @endsection
 
 @section('conteudo')
