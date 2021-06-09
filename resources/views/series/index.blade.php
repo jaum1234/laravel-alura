@@ -25,9 +25,11 @@
                 </div>
 
                 <span class="d-flex">
+                    @auth    
                     <button class="btn btn-info btn-sm me-2" onclick="toggleInput({{ $serie->id }})">
                         <i class="fas fa-edit"></i>
                     </button>
+                    @endauth
                     <a href="/series/{{ $serie->id }}/temporadas" class="btn btn-info btn-sm ">
                         <i class="fas fa-external-link-alt"></i>
                     </a>
@@ -35,7 +37,9 @@
                                 onsubmit="return confirm('Tem certeza que deseja excluir {{$serie->nome}}')">
                         @csrf
                         <!--@method('DELETE')-->
+                        @auth
                         <button class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash-alt"></i></button>
+                        @endauth
                     </form>
                 </span>
             </li>

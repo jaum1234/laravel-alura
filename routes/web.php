@@ -2,12 +2,14 @@
 
 use Faker\Guesser\Name;
 use App\Models\Episodio;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\EpisodiosController;
 use App\Http\Controllers\TemporadasController;
+use App\Http\Middleware\Autenticador;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,14 +25,17 @@ use App\Http\Controllers\TemporadasController;
 
 
 Route::get('/series', [SeriesController::class, 'index'])
-    ->name('listar_series')
-    ->middleware('auth');
+    ->name('listar_series');
+
 
 Route::get('/series/criar', [SeriesController::class, 'create'])
-    ->name('form_criar_serie');
+    ->name('form_criar_serie')
+    ->middleware('autenticador');
     
-Route::post('/series/criar', [SeriesController::class, 'store']);
-Route::post('/series/remover/{id}', [SeriesController::class, 'destroy']);
+Route::post('/series/criar', [SeriesController::class, 'store'])
+->middleware('autenticador');
+Route::post('/series/remover/{id}', [SeriesController::class, 'destroy'])
+->middleware('autenticador');
 
 Route::get('/series/{serieId}/temporadas', [TemporadasController::class, 'index']);
 
@@ -45,4 +50,10 @@ Route::post('/login/do', [LoginController::class, 'login']);
 
 Route::get('/registro', [RegistroController::class, 'create']);
 Route::post('/registro/do', [RegistroController::class, 'store']);
+
+Route::get('/sair', function() {
+    Auth::logout();
+
+    return redirect('/login');
+});
 
